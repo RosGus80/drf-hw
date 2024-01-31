@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'phonenumber_field',
+    'django-filters',
 
     'users',
     'courses',
@@ -139,3 +140,9 @@ AUTH_USER_MODEL = 'users.User'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+}

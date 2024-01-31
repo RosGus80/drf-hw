@@ -13,6 +13,10 @@ class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
 
 
+class CourseCreateAPIView(generics.CreateAPIView):
+    serializer_class = CourseSerializer
+
+
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
 
