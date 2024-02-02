@@ -1,0 +1,21 @@
+[
+  {
+    "model": "courses.course",
+    "pk": 1,
+    "fields": {
+      "name": "first",
+      "description": "desc",
+      "preview": ""
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1,
+    "fields": {
+      "name": "first lesson",
+      "description": "desc",
+      "preview": "",
+      "course": 1
+    }
+  }
+]

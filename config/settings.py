@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'phonenumber_field',
-    'django-filters',
+    'django_filters',
 
     'users',
     'courses',
