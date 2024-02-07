@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'phonenumber_field',
     'django_filters',
+    'rest_framework_simplejwt',
 
     'users',
     'courses',
@@ -144,5 +145,8 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }

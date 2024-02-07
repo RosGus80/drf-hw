@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.filters import OrderingFilter, SearchFilter
 
-from users.models import Payment
+from courses.models import Payment
 from users.serializers import PaymentSerializer
 
 
