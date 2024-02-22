@@ -10,7 +10,7 @@ class Course(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     preview = models.ImageField(**NULLABLE, upload_to='previews/')
-    owner = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, **NULLABLE, default=None, on_delete=models.CASCADE)
 
 
 class Lesson(models.Model):
@@ -18,7 +18,7 @@ class Lesson(models.Model):
     description = models.TextField()
     preview = models.ImageField(**NULLABLE, upload_to='previews/')
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    owner = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, **NULLABLE, default=None, on_delete=models.CASCADE)
 
 
 class Payment(models.Model):
@@ -34,4 +34,8 @@ class Payment(models.Model):
     lesson_bought = models.ForeignKey(Lesson, on_delete=models.CASCADE, **NULLABLE)
     payment_method = models.CharField(max_length=1, choices=CHOICES)
 
+
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
