@@ -23,7 +23,6 @@ class PaymentListAPIView(generics.ListAPIView):
 
 class UserCreateAPIView(generics.CreateAPIView):
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
 
 
 class UserListAPIView(generics.ListAPIView):
