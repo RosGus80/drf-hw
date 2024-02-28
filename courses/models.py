@@ -19,6 +19,7 @@ class Lesson(models.Model):
     preview = models.ImageField(**NULLABLE, upload_to='previews/')
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, **NULLABLE, default=None, on_delete=models.CASCADE)
+    url = models.URLField(**NULLABLE, default=None)
 
 
 class Payment(models.Model):

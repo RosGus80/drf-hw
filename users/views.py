@@ -24,6 +24,11 @@ class PaymentListAPIView(generics.ListAPIView):
 class UserCreateAPIView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
+    def perform_create(self, serializer):
+        user = serializer.save()
+        user.set_password(self.request.data.get('password'))
+        user.save()
+
 
 class UserListAPIView(generics.ListAPIView):
     queryset = User.objects.all()
