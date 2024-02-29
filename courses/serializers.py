@@ -8,7 +8,7 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = '__all__'
-        validators = [LessonValidator(name='name')]
+        validators = [LessonValidator(url='url')]
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -25,6 +25,6 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = '__all__'
-        validators = [LessonValidator(name='name')]
+        validators = [LessonValidator(url='url')]
 
 
