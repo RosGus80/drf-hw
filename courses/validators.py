@@ -17,5 +17,5 @@ class LessonValidator:
                 if 'youtube.com' in match:
                     pass
                 else:
-                    raise serializers.ValidationError(f'{self.name} must be YouTube link')
+                    raise serializers.ValidationError(f'Url must be YouTube link')
 
