@@ -11,6 +11,7 @@ class Course(models.Model):
     description = models.TextField()
     preview = models.ImageField(**NULLABLE, upload_to='previews/')
     owner = models.ForeignKey(User, **NULLABLE, default=None, on_delete=models.CASCADE)
+    url = models.URLField(**NULLABLE, default=None)
 
 
 class Lesson(models.Model):
@@ -40,3 +41,15 @@ class Subscription(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
+
+class Price(models.Model):
+    currency = models.CharField(max_length=3)
+    unit_amount = models.IntegerField()
+    recurring_days = models.IntegerField()
+    product_name = models.CharField(max_length=100)
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    price = models.ForeignKey(Price, on_delete=models.CASCADE)
