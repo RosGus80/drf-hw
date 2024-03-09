@@ -4,10 +4,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from courses.models import Course, Lesson, Subscription
+from courses.models import Course, Lesson, Subscription, Product, Price
 from courses.paginators import CoursesLessonsPaginator
 from courses.permissions import IsModeratorOrOwner, IsOwner
-from courses.serializers import CourseSerializer, LessonSerializer
+from courses.serializers import CourseSerializer, LessonSerializer, ProductSerializer, PriceSerializer
+from courses.services import create_product, product_list, product_retrieve, product_delete, price_create, \
+    get_all_prices, create_session
 from courses.validators import LessonValidator
 
 
@@ -107,3 +109,60 @@ class SubscriptionRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Subscription.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated]
+
+
+class ProductCreateAPIView(generics.CreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        pass
+        response = create_product(name=self.request.data.get('name'), description=self.request.data.get('description'))
+        stripe_id = response['id']
+        new_obj = serializer.save()
+        new_obj.str_id = stripe_id
+        serializer.save()
+
+
+class ProductListAPIView(APIView):
+    def get(self, request):
+        return Response({'products': product_list()})
+
+
+class ProductRetrieveAPIView(APIView):
+    def get(self, request, product_id):
+        return Response({'product': product_retrieve(product_id)})
+
+
+class ProductDeleteAPIView(APIView):
+    def delete(self, request, product_id):
+        return Response({'deleted:': product_delete(product_id)})
+
+
+class PriceCreateAPIView(generics.CreateAPIView):
+    queryset = Price.objects.all()
+    serializer_class = PriceSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        response = price_create(unit_amount=self.request.data.get('unit_amount')*100, recurring_days=self.request.data.get('recurring_days'), product_id=self.request.data.get('product_id'))
+        new_obj = serializer.save()
+        new_obj.str_id = response['id']
+        new_obj.currency = 'rub'
+        serializer.save()
+
+
+class PriceListAPIView(APIView):
+    def get(self, request):
+        return Response({'prices': get_all_prices()})
+
+
+class CreateSessionAPIView(APIView):
+    """Принимает аргумент price_id и необязательно - quantity (по умолчанию равно 1)"""
+    def post(self, request):
+        if request.data.get('quantity') is None:
+            return Response({'session': create_session(request.data.get('price_id'))})
+        else:
+            return Response({'session': create_session(request.data.get('price_id'), request.data.get('quantity'))})
+

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'django_filters',
     'rest_framework_simplejwt',
+    'drf_yasg',
 
     'users',
     'courses',
@@ -150,3 +151,5 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
+
+STRIPE_API_BASE_URL = 'https://api.stripe.com'
