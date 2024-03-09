@@ -19,6 +19,7 @@ class CourseSerializer(serializers.ModelSerializer):
     lessons = LessonSerializer(source="lesson_set", many=True, read_only=True)
 
     def get_session_url(self, obj):
+        """Автоматически создает сессию в момент сериализации курса"""
         return create_session(obj.price_id)['url']
 
     def get_lessons_count(self, obj):

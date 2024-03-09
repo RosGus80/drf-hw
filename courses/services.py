@@ -16,7 +16,7 @@ def create_product(name, description):
 
 def product_list():
     """Получает продукты из страйпа, а не из бд,
-    поэтому желательн сделать метод, чистящий страйп от несуществующих в бд продуктов"""
+    поэтому желательно сделать метод, чистящий страйп от несуществующих в бд продуктов"""
     stripe.api_key = os.getenv('STRIPE_API_KEY')
     response = stripe.Product.list()
     return response
@@ -40,8 +40,8 @@ def product_delete(product_id):
 
 
 def price_create(unit_amount, product_id, recurring_days=0):
-    """В поле recurring нужно передать словарь со значениями {interval: ...}
-    и в значение для ключа interval передать одно из значений в словаре: 'month', 'year', 'week', 'day'
+    """В поле recurring_days нужно передать целое число дней.
+    Если подписка оплачивается ежедневно - 1, еженедельно - 7, ежемесячно - 30, ежегодно - 365.
     Передавайте 0, если платеж единичный"""
     stripe.api_key = os.getenv('STRIPE_API_KEY')
     recurring = {}
@@ -66,6 +66,8 @@ def price_create(unit_amount, product_id, recurring_days=0):
 
 
 def get_all_prices():
+    """Получает цены из страйпа, а не из бд,
+        поэтому желательно сделать метод, чистящий страйп от несуществующих в бд цен"""
     stripe.api_key = os.getenv('STRIPE_API_KEY')
     output = stripe.Price.list(limit=200)
     return output

@@ -17,6 +17,8 @@ from courses.validators import LessonValidator
 
 
 class CourseCreateAPIView(generics.CreateAPIView):
+    """Вью для создания курса. Чтобы подключить к курсу возможность его продавать,
+     обратиться к документации вьюшек по созданию Product и Price"""
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated]
 
@@ -112,6 +114,7 @@ class SubscriptionRetrieveAPIView(generics.RetrieveAPIView):
 
 
 class ProductCreateAPIView(generics.CreateAPIView):
+    """Чтобы подключить оплату, первым делом необходимо создать продукт-алиас курсу, который вы хотите продать"""
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
@@ -126,6 +129,7 @@ class ProductCreateAPIView(generics.CreateAPIView):
 
 
 class ProductListAPIView(APIView):
+    """Вывод всех зарегистрированных продуктов. Чтобы получить айди интересующего продукта, смотреть здесь"""
     def get(self, request):
         return Response({'products': product_list()})
 
@@ -141,6 +145,7 @@ class ProductDeleteAPIView(APIView):
 
 
 class PriceCreateAPIView(generics.CreateAPIView):
+    """После создания продукта, нужно создать объект типа цена"""
     queryset = Price.objects.all()
     serializer_class = PriceSerializer
     permission_classes = [IsAuthenticated]
@@ -154,12 +159,14 @@ class PriceCreateAPIView(generics.CreateAPIView):
 
 
 class PriceListAPIView(APIView):
+    """Вывод всех цен. Чтобы получить айди цены, смотреть здесь"""
     def get(self, request):
         return Response({'prices': get_all_prices()})
 
 
 class CreateSessionAPIView(APIView):
-    """Принимает аргумент price_id и необязательно - quantity (по умолчанию равно 1)"""
+    """Принимает аргумент price_id и необязательно - quantity (по умолчанию равно 1)
+    Обычно сессию создавать вручную не придется"""
     def post(self, request):
         if request.data.get('quantity') is None:
             return Response({'session': create_session(request.data.get('price_id'))})
