@@ -10,6 +10,7 @@ from courses.permissions import IsModeratorOrOwner, IsOwner
 from courses.serializers import CourseSerializer, LessonSerializer, ProductSerializer, PriceSerializer
 from courses.services import create_product, product_list, product_retrieve, product_delete, price_create, \
     get_all_prices, create_session
+from courses.tasks import send_mail_course_updated
 from courses.validators import LessonValidator
 
 
@@ -46,7 +47,11 @@ class CourseRetrieveModeratorAPIView(generics.RetrieveAPIView):
 class CourseUpdateAPIView(generics.UpdateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    permission_classes = [IsAuthenticated, IsModeratorOrOwner]
+    permission_classes = [IsAuthenticated]
+
+    def perform_update(self, serializer):
+        course = serializer.save()
+        send_mail_course_updated.delay(course.pk)
 
 
 class CourseDestroyAPIView(generics.DestroyAPIView):
