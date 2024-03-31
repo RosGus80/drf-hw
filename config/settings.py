@@ -90,9 +90,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'drf-homework',
-        'USER': 'postgres',
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'NAME': "postgres",
+        'USER': "postgres",
+        'PASSWORD': 'secretpassword',
+        'HOST': 'db',
     }
 }
 
@@ -153,6 +154,11 @@ REST_FRAMEWORK = {
     ),
 }
 
+CORS_ALLOWED_ORIGINS = [
+    '*',
+]
+
+
 STRIPE_API_BASE_URL = 'https://api.stripe.com'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -168,4 +174,6 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_TIMEZONE = "Australia/Tasmania"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_BROKER_URL = 'redis://redis:6379/0'
 
